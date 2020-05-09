@@ -5,16 +5,9 @@ const app = express()
 
 app.get('*', (req, res) => {
   const { path } = req
+  const url = redirects[path]
 
-  const from = Object.keys(redirects).find((from) => from === path)
-
-  if (!from) {
-    return res.status(404).send()
-  }
-
-  const to = redirects[from]
-
-  res.redirect(to)
+  return url ? res.redirect(url) : res.status(404).send()
 })
 
 module.exports = app.listen(8080, function onStart() {
